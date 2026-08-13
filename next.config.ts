@@ -9,7 +9,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Standalone output is for the Docker image; Vercel does its own output
+  // tracing and breaks when standalone is forced.
+  output: process.env.VERCEL ? undefined : "standalone",
   poweredByHeader: false,
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
