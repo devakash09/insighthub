@@ -1,26 +1,165 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
+/* ───────────────────────── InsightHub design tokens ─────────────────────────
+   Brand: deep indigo. Surfaces: near-white page / white cards (light),
+   deep slate page / slightly lighter cards (dark). Chart series colors are a
+   CVD-validated 8-slot categorical palette (assign in order, never cycle). */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.625rem;
+
+  --background: #f7f8fa;
+  --foreground: #16181d;
+  --card: #ffffff;
+  --card-foreground: #16181d;
+  --popover: #ffffff;
+  --popover-foreground: #16181d;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: #eef0f4;
+  --secondary-foreground: #16181d;
+  --muted: #f1f2f5;
+  --muted-foreground: #64697a;
+  --accent: #eef0f6;
+  --accent-foreground: #16181d;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --border: #e6e8ee;
+  --input: #dfe2e9;
+  --ring: #4f46e5;
+
+  /* Categorical chart palette — light-surface steps (validated order) */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+  --chart-6: #008300;
+  --chart-7: #4a3aa7;
+  --chart-8: #e34948;
+  /* Chart chrome */
+  --chart-grid: #eceef2;
+  --chart-axis: #c9ccd4;
+  --chart-muted: #8a8f9c;
+  --chart-emphasis-dim: #d7dae1;
+}
+
+.dark {
+  --background: #0b0d12;
+  --foreground: #e7e9ef;
+  --card: #12151c;
+  --card-foreground: #e7e9ef;
+  --popover: #171b24;
+  --popover-foreground: #e7e9ef;
+  --primary: #6d7bf3;
+  --primary-foreground: #ffffff;
+  --secondary: #1b1f29;
+  --secondary-foreground: #e7e9ef;
+  --muted: #191d26;
+  --muted-foreground: #99a0ae;
+  --accent: #1d222e;
+  --accent-foreground: #e7e9ef;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --success: #34c268;
+  --warning: #e8a33d;
+  --border: rgba(255, 255, 255, 0.09);
+  --input: rgba(255, 255, 255, 0.13);
+  --ring: #6d7bf3;
+
+  /* Categorical chart palette — dark-surface steps */
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
+  --chart-6: #008300;
+  --chart-7: #9085e9;
+  --chart-8: #e66767;
+  --chart-grid: #1e222c;
+  --chart-axis: #3a3f4c;
+  --chart-muted: #8a8f9c;
+  --chart-emphasis-dim: #2b303c;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 20%, transparent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Thin, unobtrusive scrollbars for data-dense panes */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 35%, transparent) transparent;
+  }
+}
+
+/* Recharts chrome — keep grid/axis recessive and text in ink tokens */
+.recharts-cartesian-axis-tick text {
+  fill: var(--chart-muted);
+  font-size: 11px;
+}
+.recharts-cartesian-grid line {
+  stroke: var(--chart-grid);
+}
+.recharts-reference-line line {
+  stroke: var(--chart-axis);
 }
