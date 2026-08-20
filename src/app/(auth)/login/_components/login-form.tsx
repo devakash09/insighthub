@@ -64,8 +64,24 @@ export function LoginForm({ noWorkspace }: { noWorkspace: boolean }) {
         password: parsed.data.password,
         redirect: false,
       });
-      if (res?.error) {
-        setFormError("Invalid email or password");
+      // Depending on the failure, NextAuth surfaces the error either as
+      // `res.error` or only as an `?error=` param on the returned URL
+      // (e.g. "Configuration" when the database is unreachable).
+      const urlError = (() => {
+        if (!res?.url) return null;
+        try {
+          return new URL(res.url, window.location.origin).searchParams.get("error");
+        } catch {
+          return null;
+        }
+      })();
+      const failure = res?.error ?? urlError;
+      if (failure) {
+        setFormError(
+          failure === "CredentialsSignin"
+            ? "Invalid email or password"
+            : "We couldn't reach the server. The database may be unavailable — please try again shortly.",
+        );
         return;
       }
       router.push("/dashboard");
